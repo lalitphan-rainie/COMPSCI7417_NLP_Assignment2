@@ -1,0 +1,19 @@
+import seaborn as sns
+#convert creation time column to pandas datetime type
+df['Creation Time'] = pd.to_datetime(df['Creation Time'], format='mixed')
+
+#for each cluster, create a time series line
+for cluster_id in sorted(df['ClusterID'].unique()):
+    if cluster_id!=-1:
+        cluster_data = df[df['ClusterID'] == cluster_id]
+        
+        # Create cumulative count for this cluster
+        dates = cluster_data['Creation Time']
+        counts = range(1, len(cluster_data) + 1)
+        plt.step(dates, counts, where='post', label=f'Cluster {cluster_id}')
+plt.title('Number of Posts in Each Cluster Over Time')
+plt.xlabel('Date')
+plt.ylabel('Number of Posts')
+plt.legend(title='Clusters')
+plt.tight_layout()
+plt.show()
